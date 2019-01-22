@@ -1,3 +1,14 @@
-<h1>
-  {{title}}
-</h1>
+    <h1>
+      {{title}}
+    </h1>
+    <dl>
+      <div  *ngFor="let currentRecipe of recipes">
+        <dt>{{currentRecipe.title}}</dt>
+        <dd>
+        <ul>
+          <li *ngFor="let ingredient of currentRecipe.ingredients">{{ingredient}}</li>
+        </ul>
+        <p>{{currentRecipe.directions}}</p>
+        </dd>
+      </div>
+    </dl>
