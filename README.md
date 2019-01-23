@@ -1,28 +1,41 @@
-# RecipeBox
+## Issues
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+Recipe objects were instantiated with ingredients as an array of basic strings.   
+The problem occurred while attempting to use [(ngModel)] on a sting element within an array.    
+The string would be rewritten, but the page would rewrite on every character change, causing the focus to be lost from the input field.
 
-## Development server
+Example:
+~~~
+<div *ngfor="let ingredient of Recipe.ingredients">
+  <li>{{ingredient}}<button (click)="selectIngredient"></li>
+</div>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+<input *ngIf="selectIngredient" [(ngModel)]="selectedIngredient(ingredient)">
 
-## Code scaffolding
+<script>
+  selectIngredient(clickedIngredient) {
+    this.selectedIngredient = clickedIngredient;
+  }
+</script>
+~~~
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+Input field _would_ appear, but only one change could be made at a time. I.E. typing one character, or hitting backspace would cause the element to reload, and the input field to lose focus. It _did_ change the origin.
 
-## Build
+#### Solution
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+The issue took place because of pathing through Angular. The string change was considered a object change at some level, which caused a major portion of the page to be rewritten on character change. As such the solution was to create an object class with a property that is _adjusted_ and not _overwritten_.
 
-## Running unit tests
+Example:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+<!-- ~~~HTML -->
+`|<div *ngfor="let ingredient of Recipe.ingredients">`   
+`| <li>{{ingredient.`*name*`}}<button (click)="selectIngredient"></li>`    
+`|</div>`    
+`|<input *ngIf="selectIngredient" [(ngModel)]="selectedIngredient(ingredient.`*name*`)">`    
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+`|<script>`    
+`| selectIngredient(clickedIngredient) {`    
+`|   this.selectedIngredient = clickedIngredient;`    
+`| }`   
+`|</script>`
+<!-- ~~~ -->
