@@ -1,14 +1,29 @@
-    <h1>
-      {{title}}
-    </h1>
-    <dl>
-      <div  *ngFor="let currentRecipe of recipes">
-        <dt>{{currentRecipe.title}}</dt>
-        <dd>
-        <ul>
-          <li *ngFor="let ingredient of currentRecipe.ingredients">{{ingredient}}</li>
-        </ul>
-        <p>{{currentRecipe.directions}}</p>
-        </dd>
-      </div>
-    </dl>
+<div class="container">
+  <h1>
+    {{title}}
+  </h1>
+  <ul>
+    <div *ngFor="let currentRecipe of recipes">
+      <dt>{{currentRecipe.title}}</dt><button (click)="selectRecipe(currentRecipe)">Show!</button>
+    </div>
+  </ul>
+
+
+  <div *ngIf="selectedRecipe">
+    <label for="">Edit Title: </label>
+    <input [(ngModel)]="selectedRecipe.title">
+    <!-- <h2>{{selectedRecipe.title}}</h2> -->
+    <ul>
+      <li *ngFor="let ingredient of selectedRecipe.ingredients; index as ingredientIndex">
+        {{ingredient}}<button (click)="selectIngredient(ingredient, ingredientIndex)">Edit Ingredient</button>
+      </li>
+    </ul>
+    <p>{{selectedRecipe.directions}}</p>
+    <button (click)="finishedEditingRecipe()">Done Editing Recipe</button>
+  </div>
+
+  <div *ngIf="selectedIngredient">
+    <input [(ngModel)]="selectedRecipe.ingredients[selectedIngredientIndex]">
+    <button (click)="finishedEditingIngredient()">Done Editing Ingredient</button>
+  </div>
+</div>
