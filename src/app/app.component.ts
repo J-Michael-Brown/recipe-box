@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'Recipe Box';
 
   recipes: Recipe[] = [
-    new Recipe('put potatoes in bowl and mash','mashed potatoes',[new Ingredient('potatoe', 1),new Ingredient('sour cream', 1),new Ingredient('mozerella', 1),new Ingredient('salt', 1),new Ingredient('pepper', 1)]),
+    new Recipe('put potatoes in bowl and mash','mashed potatoes',[new Ingredient('potatoe', 1),new Ingredient('sour cream', 1, 'container'),new Ingredient('mozerella', 8, 'grams'),new Ingredient('salt', 1),new Ingredient('pepper', 1)]),
     new Recipe('put steak in bowl and mash','Fillet Mignon',[new Ingredient('cow', 1),new Ingredient('butcher', 1),new Ingredient('nail gun', 1),new Ingredient('flamethrower', 1),new Ingredient('frenchman', 1)])
   ];
 
